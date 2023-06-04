@@ -1,20 +1,20 @@
-#include <unistd.h>
 #include "main.h"
+#include <unistd.h>
 
-int print_unsigned_number(unsigned int n)
+int print_unsigned_number(unsigned int n, char *buffer)
 {
-	int num_digits = 0;
+    int num_digits = 0;
 
-	if (n == 0)
-	{
-		_putchar('0');
-		num_digits++;
-	}
-	else if (n / 10)
-		num_digits += print_unsigned_number(n / 10);
+    if (n == 0)
+    {
+        buffer[0] = '0';
+        num_digits = 1;
+    }
+    else if (n / 10)
+        num_digits += print_unsigned_number(n / 10, buffer);
 
-	_putchar((n % 10) + '0');
-	num_digits++;
+    buffer[num_digits] = (n % 10) + '0';
+    num_digits++;
 
-	return num_digits;
+    return num_digits;
 }

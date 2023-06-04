@@ -1,0 +1,50 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "_PRINTF" "" "June 2023" ""
+.SH "NAME"
+\fB_printf\fR
+.P
+\&\.TH _PRINTF 3 a poin "June 2023" "Version 1\.0" "User Manual"
+.P
+\&\.SH NAME _printf \- Custom printf function
+.P
+\&\.SH SYNOPSIS \.B #include "main\.h" \.PP \.I int _printf(const char *format, \|\.\|\.\|\.);
+.P
+\&\.SH DESCRIPTION The \efB_printf\efR Print ARGUMENT(s) according to FORMAT, or execute according to OPTION: \-\-help display this help and exit
+.IP "" 4
+.nf
+   \-\-version
+          output version information and exit
+
+   FORMAT controls the output as in C printf\.  Interpreted sequences are:
+
+%c this print just only a character
+%s this print a string of characters\.
+%% this print the character "%"\.
+%d / %i this print a integers or with sign\.
+%b  this print a integers in binary with funcion _print_binary\.
+%u  this print a integers without any sign\.
+%o  this print a integers or with sign in octal with funcion _print_unsigned_octal\.
+%x  this print a integers or with sign in hexadecimal(lowercase) with funcion _print_unsigned_hex\.
+%X  this print a integers or with sign in hexadecimal(uppercase) with funcion _print_unsigned_hex\.
+%p  this printter\.
+.fi
+.IP "" 0
+.P
+\&\.SH PARAMETERS \.IP \efIformat\efR The format string that specifies the format of the output\. \.IP \efI\|\.\|\.\|\.\efR Additional arguments to replace the format specifiers in the format string\.
+.P
+\&\.SH RETURN VALUE The numbers of characters printed\.
+.P
+\&\.SH FORMAT SPECIFIERS The following format specifiers are supported by \efB_printf\efR: \.IP \efB%c\efR Print a single character\. \.IP \efB%s\efR Print a string\. \.IP \efB%%\efR Print a percent character\. \.IP \efB%d\efR, \efB%i\efR Print a signed integer\. \.IP \efB%u\efR Print an unsigned integer\. \.IP \efB%o\efR Print an unsigned integer in octal format\. \.IP \efB%x\efR, \efB%X\efR Print an unsigned integer in hexadecimal format\.
+.P
+\&\.SH EXAMPLE The following example demonstrates the usage of \efB_printf\efR: \.BR \efB#include "main\.h" \efR \.BR \efBint main()\efR \efB{\efR \.BR \efB _printf("Hello, %s!\en", "world");\efR \.BR \efB return 0;\efR \efB}\efR
+.P
+\&\.SH SEE ALSO fprintf(3), sprintf(3)
+.P
+\&\.SH AUTHOR Juan Esteban Wilson Juan José
+.P
+\&\.SH COPYRIGHT Copyright (c) 2023 Sofcreaf
+.P
+Este manual es propiedad de Sofcreaf
+.P
+Esto ha sido creado por un grupo de jovenes estudiantes patrocinado por la cooperativa Creafam \.SH BUGS Report bugs to si@gmail\.com\.

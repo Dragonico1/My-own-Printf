@@ -1,27 +1,27 @@
-#include <unistd.h>
 #include "main.h"
+#include <unistd.h>
 
-int print_number(int n)
+int print_number(int n, char *buffer)
 {
-	int num_digits = 0;
+    int num_digits = 0;
 
-	if (n == 0)
-	{
-		_putchar('0');
-		num_digits++;
-	}
-	else if (n < 0)
-	{
-		_putchar('-');
-		num_digits++;
-		n = -n;
-	}
+    if (n == 0)
+    {
+        buffer[0] = '0';
+        num_digits = 1;
+    }
+    else if (n < 0)
+    {
+        buffer[0] = '-';
+        num_digits = 1;
+        n = -n;
+    }
 
-	if (n / 10)
-		num_digits += print_number(n / 10);
+    if (n / 10)
+        num_digits += print_number(n / 10, buffer + num_digits);
 
-	_putchar((n % 10) + '0');
-	num_digits++;
+    buffer[num_digits] = (n % 10) + '0';
+    num_digits++;
 
-	return num_digits;
+    return num_digits;
 }

@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include "main.h"
+#include <unistd.h>
 
 int _printf(const char *format, ...)
 {
@@ -10,6 +11,9 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 
+	char buffer[1024];
+	int buffer_index = 0;
+
 	while (format && format[i])
 	{
 		if (format[i] == '%')
@@ -18,58 +22,119 @@ int _printf(const char *format, ...)
 			switch (format[i])
 			{
 				case 'c':
-					_putchar(va_arg(args, int));
+				{
+					int c = va_arg(args, int);
+					buffer[buffer_index++] = (char)c;
 					len++;
 					break;
+				}
 				case 's':
+				{
 					str = va_arg(args, char *);
 					if (str == NULL)
-						str = "(null)";
-					len += _puts(str);
+    				{
+    					str = "(null)";
+    				}
+					int str_len = 0;
+					while (str[str_len] != '\0')
+    				{
+    					str_len++;
+    				}
+					for (int j = 0; j < str_len; j++)
+					{
+						buffer[buffer_index++] = str[j];
+					}
+					len += str_len;
 					break;
+				}
                 case 'o':
-					len += print_unsigned_octal(va_arg(args, unsigned int));
+				{
+					int digits = print_unsigned_octal(va_arg(args, unsigned int), buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
+				}
                 case 'x':
-					len += print_unsigned_hex(va_arg(args, unsigned int), 0);
+				{
+					int digits = print_unsigned_hex(va_arg(args, unsigned int), 0, buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
+				}
 				case 'X':
-					len += print_unsigned_hex(va_arg(args, unsigned int), 1);
+				{
+					int digits = print_unsigned_hex(va_arg(args, unsigned int), 1, buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
+				}
 				case '%':
-					_putchar('%');
+					buffer[buffer_index++] = '%';
 					len++;
 					break;
 				case 'p':
-				void *ptr = va_arg(args, void *);
-				len += _puts("0x");
-				len += print_address((unsigned long long)ptr);
-				break;
+				{
+					void *ptr = va_arg(args, void *);
+					buffer[buffer_index++] = '0';
+					buffer[buffer_index++] = 'x';
+					int digits = print_address((unsigned long long)ptr, buffer + buffer_index);
+					buffer_index += digits;
+					len += (digits + 2);
+					break;
+				}
 				case 'd':
+				{
+					int digits = print_number(va_arg(args, int), buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
+					break;
+				}
 				case 'i':
-					len += print_number(va_arg(args, int));
+				{
+					int digits = print_number(va_arg(args, int), buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
+				}
 				case 'u':
-					len += print_unsigned_number(va_arg(args, unsigned int));
+				{
+					int digits = print_unsigned_number(va_arg(args, unsigned int), buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
-
+				}
 				case 'b':
-					len += print_binary(va_arg(args, unsigned int));
+				{
+					int digits = print_binary(va_arg(args, unsigned int), buffer + buffer_index);
+					buffer_index += digits;
+					len += digits;
 					break;
+				}
 				default:
-					_putchar('%');
-					_putchar(format[i]);
+					buffer[buffer_index++] = '%';
+					buffer[buffer_index++] = format[i];
 					len += 2;
 					break;
 			}
 		}
 		else
 		{
-			_putchar(format[i]);
+			buffer[buffer_index++] = format[i];
 			len++;
 		}
 
 		i++;
+
+		if (buffer_index >= 1024 - 1)
+		{
+			write(1, buffer, buffer_index);
+			buffer_index = 0;
+		}
+	}
+
+	if (buffer_index > 0)
+	{
+		write(1, buffer, buffer_index);
 	}
 
 	va_end(args);

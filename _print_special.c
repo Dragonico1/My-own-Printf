@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 void print_special_string(const char *str, char *buffer, int *buffer_index, int *len) 
 {
     if (str == NULL) 

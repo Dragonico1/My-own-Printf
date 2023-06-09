@@ -45,6 +45,9 @@ int main(void)
     _printf("Binary:[%b]\n", 98);
     printf("Binary:[%b]\n", 98);
 
+    _printf("special:[%S ]\n", "Best\nSchool");
+    _printf("special:[%S ]\n", "Best\nSchool");
+
     return (0);
 }
 
